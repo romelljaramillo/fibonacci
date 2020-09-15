@@ -16,25 +16,27 @@
         <div id="App" class="row pt-5">
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-center">
                         <h4>Select option fibonacci</h4>
                     </div>
-                    <form id="product-form" class="card-body">
+                    <div id="fibonacci-form" class="card-body">
                         <div class="form-group">
-                            <input type="text" id="name" placeholder="Product Name" class="form-control">
+                            <select name="select-process" id="select-process" class="form-control" >
+                                <option>Seleccione...</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <input type="number" id="price" step="0.01" placeholder="Product Price" class="form-control">
+                            <input type="datetime-local" id="date-ini" value="1975-01-04T10:29:01" class="form-control">
                         </div>
                         <div class="form-group">
-                            <input type="number" id="year" min="1900" max="2099" step="1" value="2018" class="form-control">
+                            <input type="datetime-local" id="date-end" value="1978-06-28T20:38:16" class="form-control">
                         </div>
-                        <input type="submit" value="Save" class="btn btn-primary btn-block">
-                    </form>
+                        <button id="fibonacci-btn" class="btn btn-primary btn-block">search</button>
+                    </div>
                 </div>
             </div>
 
-            <div id="product-list" class="col-md-8"></div>
+            <div id="fibonacci-resul" class="col-md-8"></div>
         </div>
     </div>
 
