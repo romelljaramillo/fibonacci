@@ -1,4 +1,4 @@
-class FibonacciMonth {
+export class FibonacciMonth {
 
     /**
      * Retorna la opción a seleccionar
