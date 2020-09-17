@@ -14,10 +14,6 @@ if (PHP_SAPI == 'cli'){
     echo $list;
     $app->selectProcess();
 
-    // echo $app->verifyFiboonaci(377);
-    // echo date("Y-m-d H:i:s", 267914296);
-    // 1975-04-01 10:29:01 fibonacci
-    // 1978-06-28 20:38:16 fibonacci
 } else {
     echo 'interface web';
     echo 'proximamente';

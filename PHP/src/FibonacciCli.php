@@ -130,12 +130,12 @@ class FibonacciCli {
         $ini=strtotime($this->startDate);
         $end=strtotime($this->endDate);
 
-        for($i=$ini; $i<=$end; $i+=86400){
+        for($i=$ini; $i<=$end; $i+=1){
             $fibonacci = 'NO';
             if($this->verifyFiboonaci($i)){
                 $fibonacci = 'Fibonacci';
+                echo $i . " - " . date("Y-m-d H:i:s", $i). " - " .$fibonacci . "\n";
             }
-            echo $i . " - " . date("Y-m-d H:i:s", $i). " - " .$fibonacci . "\n";
         }
     }
 

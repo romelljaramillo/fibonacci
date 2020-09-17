@@ -22,21 +22,29 @@ class Fibonacci {
         return listProcess;
     }
 
+    /* runProcess() {
+        return new Promise(resolve => {
+            let i;
+            let fibo = [];
+            for(i=this.numStart; i<=this.numEnd; i+=1){
+                if(this.verifyFiboonaci(i)){
+                    fibo.push(i);
+                    console.log('Fibonacci: ' , i);
+                }
+            }
+            resolve(fibo);
+        });
+    } */
+
     runProcess() {
         let i;
         let fibo = [];
-        // console.log(this.numStart);
-        // console.log(this.numEnd);
-
-        for(i=this.numStart; i<=this.numEnd; i+=86400){
-            // console.log(i);
-
+        for(i=this.numStart; i<=this.numEnd; i+=1){
             if(this.verifyFiboonaci(i)){
                 fibo.push(i);
-                console.log(i);
+                console.log('Fibonacci: ' , i);
             }
         }
-
         return fibo;
     }
 
@@ -63,7 +71,7 @@ class Fibonacci {
 
 class FibonacciMonth extends Fibonacci {
     index(){
-        this.title = 'Fibonacci Month';
+        this.title = 'Se encuentre entre el timestamp del inicio y fin del mes actual';
         return this.title;
     }
 
@@ -78,7 +86,7 @@ class FibonacciMonth extends Fibonacci {
 
 class FibonacciYear extends Fibonacci {
     index(){
-        this.title = 'Fibonacci Year';
+        this.title = 'Se encuentre entre el timestamp del inicio y fin del a�o actual';
         return this.title;
     }
     
@@ -92,7 +100,7 @@ class FibonacciYear extends Fibonacci {
 
 class FibonacciInsertDate extends Fibonacci {
     index(){
-        this.title = 'Fibonacci insert date';
+        this.title = 'Se encuentre entre el timestamp del inicio y fin entre dos fechas atendiendo al formato';
         return this.title;
     }
     
@@ -102,7 +110,6 @@ class FibonacciInsertDate extends Fibonacci {
         this.numEnd = date;
     }
 }
-
 
 const fibonacciMonth = new FibonacciMonth();
 const fibonacciYear = new FibonacciYear();
@@ -120,16 +127,13 @@ console.log(options);
 cargaCombo();
 
 function cargaCombo() {
-  let list = '<option value="2">Select</option>';
+  let list = '<option value="2">Select process</option>';
   options.forEach((item, index) => {
-    list += '<option value=" ' + index + ' ">' + item + '</option>';
+    list += '<option value="' + index + '">' + item + '</option>';
   });
   document.getElementById("select-process").innerHTML = list;
 
 }
-
-document.getElementById('select-process').addEventListener('change', selectOption);
-
 
 function selectOption() {
     var option = document.getElementById("select-process").value;
@@ -165,64 +169,70 @@ function selectOption() {
 
 }
 
-document.getElementById("fibonacci-btn").addEventListener("click", processForm);
-    
-function processForm(e) {
+function processForm() {
+    // e.preventDefault();
     const option = document.getElementById('select-process').value;
-    const dateIni = document.getElementById('date-ini').value;
-    const dateEnd = document.getElementById('date-end').value;
+    let dateIni = document.getElementById('date-ini').value;
+    let dateEnd = document.getElementById('date-end').value;
     console.log(option);
 
     if(option == undefined){
         alert('option not valid');
         return;
     }
+    
     const obj = fibonacci.process[parseInt(option)];
-    // console.log(obj);
 
     if(!obj){
         alert('obj not valid');
         return;
     }
-    var date = new Date(dateIni);
-    var unixTimeStamp = Math.round(date.getTime() / 1000);
+   
+    console.log('dateIni ', dateIni);
+    console.log('dateEnd ', dateEnd);
 
+    obj.numStart = Date.parse(new Date(dateIni)+" UTC")/1000;
+    obj.numEnd = Date.parse(new Date(dateEnd)+" UTC")/1000;
 
-    console.log('UNIX ', unixTimeStamp);
+    console.log("numStart: " , obj.numStart);
+    console.log("numEnd: " , obj.numEnd);
 
-
-    obj.numStart = new Date(dateIni).getTime();
-    obj.numEnd = new Date(dateEnd).getTime();
-
-    // console.log(obj.numStart);
-    // console.log(obj.numEnd);
-
-    // obj.numStart = new Date(obj.numStart);
-    // obj.numEnd = new Date(obj.numEnd);
-
-    // console.log(obj.numStart);
-    // console.log(obj.numEnd);
-
-    // 04-01-1975 10:29:01 = 158059741000 = fibonacci
-    // 28-06-1978 20:38:16 = 267907096000 = fibonacci
-    const resul = obj.verifyFiboonaci(obj.numStart);
-    // const resul = obj.runProcess();
+    let dateFibonaci= '';
     
-    console.log(resul);
-
+    preload(true).then(() => {
+        //processForm();
+        let resp = obj.runProcess();
+        if(resp.length > 0) {
+            resp.forEach((timestamp,i) => {
+                let newTimestamp =  new Date(timestamp*1000);
+                let date = formatFecha(newTimestamp);
+                console.log(i+ '.- ' + date);
+                dateFibonaci += `<tr><td>${timestamp}</td><td>${date}</td></tr>`;
+            });
+        } else {
+            dateFibonaci += `<tr><td>No result</td><td>No result</td></tr>`;
+        }
+        document.getElementById('fibonacci-table').innerHTML = dateFibonaci;
+        preload(false);
+    });
     
-
-    // addContent(option);
-    document.getElementById('fibonacci-resul').innerHTML = `
-        <div class="card text-center mb-4">
-                <div class="card-body">
-                    <strong>Select</strong>: ${option} -
-                    <strong>Price</strong>: ${dateIni} - 
-                    <strong>Year</strong>: ${dateEnd}
-                    <a href="#" class="btn btn-danger" name="delete">Reset</a>
-                </div>
-            </div>
-        `;
-
-    e.preventDefault();
 }
+
+function formatFecha(date) {
+    const d = new Date(date);
+    let newDate = d.toISOString().slice(0,19);
+    newDate = newDate.replace("T"," ", newDate);
+    return newDate;
+}
+
+async function preload(enable){
+    
+    if(enable) document.getElementById('fibonacci-preload').style.display = "block";
+    if(!enable) document.querySelector("#fibonacci-preload").style.display = "none";    
+
+    let promise = new Promise( resolve => setTimeout(resolve, 100) );
+    await promise;
+}
+
+document.getElementById('select-process').addEventListener('change', selectOption);
+document.getElementById("fibonacci-btn").addEventListener("click", processForm);

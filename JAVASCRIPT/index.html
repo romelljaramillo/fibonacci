@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv=”Content-Type” content=”text/html; charset=ISO-8859-1? />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serie de Fibonacci</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -26,20 +27,47 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="datetime-local" id="date-ini" value="1975-01-04T10:29:01" class="form-control">
+                            <label for="date-ini">Start date</label>
+                            <input type="datetime-local" id="date-ini" name="date-ini" value="1975-04-01T10:29:01" class="form-control"
+                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" required>
                         </div>
                         <div class="form-group">
-                            <input type="datetime-local" id="date-end" value="1978-06-28T20:38:16" class="form-control">
+                            <label for="date-end">End date</label>
+                            <input type="datetime-local" id="date-end" value="1978-06-28T20:38:16" class="form-control"
+                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" required>
                         </div>
                         <button id="fibonacci-btn" class="btn btn-primary btn-block">search</button>
                     </div>
                 </div>
             </div>
-
-            <div id="fibonacci-resul" class="col-md-8"></div>
+            <div id="fibonacci-resul" class="col-md-8">
+                <div class="card text-center mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Fibonacci results</h5>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody id="fibonacci-table"></tbody>
+                        </table>
+                        <div class="text-center" id="fibonacci-preload" style="display:none;">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
+    <footer class="footer">
+        <div class="container">
+          <span class="text-muted">created by Romell Jaramillo.</span>
+        </div>
+      </footer>
     <script src="./Fibonacci.js"></script>
 </body>
 </html>
